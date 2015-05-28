@@ -28,11 +28,6 @@ function load_permission()
     end
 end
 
-function check(s)
-    if permission[s] then return true end
-    return false
-end
-
 local zmq = require"zmq"
 
 function server()
@@ -47,7 +42,7 @@ function server()
  
     while true do
         req = receiver:recv()
-        if check(req) then 
+        if permission[req] then 
             receiver:send("OK")
             publisher:send(req)
         else
