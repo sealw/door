@@ -32,9 +32,10 @@ s:connect("tcp://localhost:5555")
 
 for i=1,N do
 	s:send("13501906954 0000000001")
+	--s:send("13501906954 0000000002")
 	local data, err = s:recv()
 	if data then
-	--	print(data)
+		print(data)
 	else
 		print("s:recv() error:", err)
 	end

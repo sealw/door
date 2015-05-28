@@ -21,7 +21,11 @@
 permission = {}
 
 function load_permission() 
-    permission["13501906954 0000000001"] = 1
+    --permission["13501906954 0000000001"] = 1
+    for line in io.lines("permission.dat") do
+        _, _, key, act = string.find(line, "(%d* %d*) (%a)")
+        permission[key] = (act == "A" and 1 or nil)
+    end
 end
 
 function check(s)
