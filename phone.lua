@@ -1,4 +1,4 @@
--- Copyright (c) 2010 Seal Wang <sealwang@gmail.com>
+-- Copyright (c) 2015 Seal Wang <sealwang@gmail.com>
 --
 -- Permission is hereby granted, free of charge, to any person obtaining a copy
 -- of this software and associated documentation files (the "Software"), to deal
@@ -31,10 +31,10 @@ local s = ctx:socket(zmq.REQ)
 s:connect("tcp://localhost:5555")
 
 for i=1,N do
-	s:send("13501906954 BJ0000000001")
+	s:send("13501906954 0000000001")
 	local data, err = s:recv()
 	if data then
-		--print(data)
+	--	print(data)
 	else
 		print("s:recv() error:", err)
 	end

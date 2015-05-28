@@ -18,15 +18,38 @@
 -- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 -- THE SOFTWARE.
 
+permission = {}
+
+function load_permission() 
+    permission["13501906954 0000000001"] = 1
+end
+
+function check(s)
+    if permission[s] then return true end
+    return false
+end
+
 local zmq = require"zmq"
 
-local ctx = zmq.init(3)
-local s = ctx:socket(zmq.REP)
+function server()
+    load_permission()
 
-s:bind("tcp://lo:5555")
+    local ctx = zmq.init(3)
+    local receiver = ctx:socket(zmq.REP)
+    receiver:bind("tcp://*:5555")
 
-while true do
-	--print(string.format("Received query: '%s'", s:recv()))
-        s:recv()
-	s:send("OK")
-end
+    local publisher = ctx:socket(zmq.PUB)
+    publisher:bind("tcp://*:5556")
+ 
+    while true do
+        req = receiver:recv()
+        if check(req) then 
+            receiver:send("OK")
+            publisher:send(req)
+        else
+           receiver:send("DENY")
+        end
+    end
+end 
+
+server()
