@@ -41,6 +41,18 @@ for i=1,N do
 
 	s:send("13501906954 0000000002")
 	local data, err = s:recv()
+	
+        s:send("13501906954 0000000003 A")
+	local data, err = s:recv()
+
+        s:send("13501906954 0000000003")
+	local data, err = s:recv()
+
+	s:send("13501906954 0000000003 D")
+	local data, err = s:recv()
+
+        s:send("13501906954 0000000003")
+	local data, err = s:recv()
 end
 
 s:close()

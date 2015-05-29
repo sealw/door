@@ -32,6 +32,13 @@ function log(s)
     print(s..os.date(" %c"))
 end
 
+local f = assert(io.open("permission.dat", "a"))
+function process(key, req, tag)
+    permission[key] = tag
+    f:write(req.."\n")
+    f:flush()
+end
+
 local zmq = require"zmq"
 
 function server()
@@ -46,10 +53,19 @@ function server()
  
     while true do
         req = receiver:recv()
+        _, _, key, act = string.find(req, "(%d* %d*) (%a)")
         if permission[req] then 
             receiver:send("Y")
             publisher:send(req)
             log(req.." Y")
+        elseif act == "A" then
+            process(key, req, 1)
+            receiver:send("OK")
+            log(req)
+        elseif act == "D" then
+            process(key, req, nil)
+            receiver:send("OK")
+            log(req)
         else
            receiver:send("N")
            log(req.." N")
