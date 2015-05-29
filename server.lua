@@ -28,6 +28,10 @@ function load_permission()
     end
 end
 
+function log(s)
+    print(s..os.date(" %c"))
+end
+
 local zmq = require"zmq"
 
 function server()
@@ -43,10 +47,12 @@ function server()
     while true do
         req = receiver:recv()
         if permission[req] then 
-            receiver:send("OK")
+            receiver:send("Y")
             publisher:send(req)
+            log(req.." Y")
         else
-           receiver:send("DENY")
+           receiver:send("N")
+           log(req.." N")
         end
     end
 end 
