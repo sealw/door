@@ -31,28 +31,28 @@ local s = ctx:socket(zmq.REQ)
 s:connect("tcp://localhost:5555")
 
 for i=1,N do
-	s:send("13501906954 0000000001")
-	local data, err = s:recv()
-	if data then
-		print(data)
-	else
-		print("s:recv() error:", err)
-	end
+    s:send("0000000001 13501906954")
+    local data, err = s:recv()
+    if data then
+        print(data)
+    else
+    print("s:recv() error:", err)
+    end
 
-	s:send("13501906954 0000000002")
-	local data, err = s:recv()
+    s:send("0000000002 13501906954")
+    local data, err = s:recv()
 	
-        s:send("13501906954 0000000003 A")
-	local data, err = s:recv()
+    s:send("0000000003 13601906954 A")
+    local data, err = s:recv()
 
-        s:send("13501906954 0000000003")
-	local data, err = s:recv()
+    s:send("0000000003 13601906954")
+    local data, err = s:recv()
 
-	s:send("13501906954 0000000003 D")
-	local data, err = s:recv()
+    s:send("0000000003 13601906954 D")
+    local data, err = s:recv()
 
-        s:send("13501906954 0000000003")
-	local data, err = s:recv()
+    s:send("0000000003 13601906954")
+    local data, err = s:recv()
 end
 
 s:close()
